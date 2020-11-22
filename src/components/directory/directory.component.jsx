@@ -4,9 +4,9 @@ import MenuItem from "../menu-item/menu-item.component"
 
 class Directory extends React.Component{
 
-    constructor(){
+    constructor(props){
         super();
-       
+        console.log("directory props history is ",props);
     this.state = {
         sections: [
           {
