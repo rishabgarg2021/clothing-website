@@ -39,7 +39,7 @@ const config =  {
         }
 
     }
-    console.log(snapShot);
+
     return userRef;
 
   }
