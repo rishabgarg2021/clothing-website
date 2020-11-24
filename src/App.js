@@ -19,11 +19,18 @@ class App extends React.Component {
   unSubscribeFromAuth = null;
 
   componentDidMount(){
-    this.unSubscribeFromAuth = auth.onAuthStateChanged( async userAuth=>{
+    //the callback of this function will help to unsubscribe of the the listener.
+    //whenever a signin or signout is performed in the app, this will be invoked and userauth can be null
+    //which will set the state of the current user as null. it will also update the header.
+    this.unSubscribeFromAuth = auth.onAuthStateChanged( async userAuth => {
    
+      if(userAuth) {
+        //we will create the user, if it is not already present.
 
-      if(userAuth){
         const userRef = await createUserProfileDocument(userAuth);
+
+        // this.will be the ref of user in db.
+        //we can use this to check what data is present in user and set the state accordingly.
         userRef.onSnapshot(snapShot => {
           this.setState({currentUser:{
             id: snapShot.id,
