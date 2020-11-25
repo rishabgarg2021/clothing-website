@@ -24,6 +24,8 @@ class SignUp extends React.Component{
             return
         }
         try{
+            //this will only create the user. once the user is created, we want to create that user
+            //in db also.
             const {user} = await auth.createUserWithEmailAndPassword(email, password)
             await createUserProfileDocument(user,{displayName});
             this.setState({

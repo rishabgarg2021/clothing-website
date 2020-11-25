@@ -23,7 +23,7 @@ class App extends React.Component {
     //whenever a signin or signout is performed in the app, this will be invoked and userauth can be null
     //which will set the state of the current user as null. it will also update the header.
     this.unSubscribeFromAuth = auth.onAuthStateChanged( async userAuth => {
-   
+      console.log("callback on auth change for user ", userAuth);
       if(userAuth) {
         //we will create the user, if it is not already present.
 
