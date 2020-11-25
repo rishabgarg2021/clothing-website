@@ -7,18 +7,14 @@ import ShopPage from "./pages/shop/shop.component";
 import  Header from "./components/header/header.component"
 import SignInAndSignUp from "./pages/signin-signup-page/signin-signup-page.component"
 import {auth, createUserProfileDocument} from "./firebase/firebase.utils"
+import {connect} from "react-redux";
+import {setCurrentUser} from "./redux/user/user.actions"
 class App extends React.Component {
-
-  constructor(){
-    super();
-    this.state = {
-      currentUser : null
-    }
-  }
 
   unSubscribeFromAuth = null;
 
   componentDidMount(){
+    const {setCurrentUser} = this.props
     //the callback of this function will help to unsubscribe of the the listener.
     //whenever a signin or signout is performed in the app, this will be invoked and userauth can be null
     //which will set the state of the current user as null. it will also update the header.
@@ -32,15 +28,14 @@ class App extends React.Component {
         // this.will be the ref of user in db.
         //we can use this to check what data is present in user and set the state accordingly.
         userRef.onSnapshot(snapShot => {
-          this.setState({currentUser:{
+          setCurrentUser({
             id: snapShot.id,
             ...snapShot.data()
-          }}, () => {
-            console.log(this.state);
-          });
+          })
        
         })
       }else{
+        setCurrentUser({currentUser: userAuth})
         this.setState({currentUser: userAuth})
       }
 
@@ -57,7 +52,7 @@ class App extends React.Component {
   render(){
   return (
     <div >
-      <Header currentUser = {this.state.currentUser}/>
+      <Header />
       {/* switch : if any route matcher, it stops rendering from that point. */}
 
      <Switch>
@@ -70,4 +65,7 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser : user => dispatch(setCurrentUser(user))
+})
+export default connect(null,mapDispatchToProps)(App);
